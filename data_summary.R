@@ -25,3 +25,25 @@ penguins_raw2 %>%
   group_by(species) %>% 
   summarise(mean.mass = mean(body_mass_g, na.rm = T) ,
             sd.mass = sd(body_mass_g, na.rm = T))
+
+## Visualisation
+attach(penguins_raw2)
+
+# Isotopes
+ggplot()+ 
+  geom_point(data = penguins_raw2,
+             aes(delta_13_c_o_oo, delta_15_n_o_oo, color = species),
+             size = 3, alpha = 0.7) +
+  scale_color_viridis_d("", labels = c("Adélie", "Chinstrap", "Gentoo")) +
+  labs(x = "d13C", y = "d15N") +
+  theme_minimal() +
+  coord_equal()
+
+# Violin plot of body mass
+ggplot(penguins_raw2, aes(species, body_mass_g, fill = species))+ 
+  geom_violin(alpha = 0.7) +
+  geom_jitter(size = 2, shape = 20, alpha = 0.5, width = 0.1) +
+  scale_fill_viridis_d("", guide = "none") +
+  scale_x_discrete(labels = c("Adélie", "Chinstrap", "Gentoo")) +
+  labs(x = "", y = "Body Mass (g)") +
+  theme_light()
